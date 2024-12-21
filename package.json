@@ -1,5 +1,6 @@
 {
   "name": "vercel-ai-langchain-adaptor",
+  "version": "1.0.0",
   "type": "module",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
@@ -19,7 +20,9 @@
   "scripts": {
     "prepare": "husky",
     "build": "tsup",
+    "test": "bunx vitest",
     "lint": "bunx biome lint",
+    "tsc": "tsc --noEmit",
     "format": "bunx biome format",
     "format:write": "bunx biome format --write"
   },
