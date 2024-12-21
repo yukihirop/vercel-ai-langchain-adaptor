@@ -11,12 +11,16 @@
 			"types": "./dist/types/index.d.ts"
 		}
 	},
-	"files": ["dist"],
+	"files": [
+		"dist",
+		"README.md",
+		"README.ja.md"
+	],
 	"scripts": {
 		"build": "bun run build:clean && bun run build:esm && bun run build:cjs && bun run build:types",
 		"build:clean": "rm -rf dist",
-		"build:esm": "bun build ./src/index.ts --outdir ./dist/esm --target node",
-		"build:cjs": "bun build ./src/index.ts --outdir ./dist/cjs --target node --format cjs",
+		"build:esm": "bun build --minify ./src/index.ts --outdir ./dist/esm --target node",
+		"build:cjs": "bun build --minify ./src/index.ts --outdir ./dist/cjs --target node --format cjs",
 		"build:types": "tsc --emitDeclarationOnly --outDir dist/types",
 		"lint": "bunx biome lint",
 		"format": "bunx biome format",
