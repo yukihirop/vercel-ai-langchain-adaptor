@@ -14,7 +14,8 @@
         "langchain",
         "langgraph",
         "pregel",
-        "readmeja"
+        "readmeja",
+        "vitest"
     ],
     "ignoreWords": [],
     "import": []
