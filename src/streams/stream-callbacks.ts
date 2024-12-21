@@ -64,7 +64,7 @@ export function createCallbacksTransformer(
 			try {
 				obj = JSON.parse(message);
 			} catch {
-				return;
+				// noop
 			}
 
 			const parsed = LangChainIntermediateStreamEventSchema.safeParse(obj);
