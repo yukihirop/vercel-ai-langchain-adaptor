@@ -83,24 +83,25 @@ export const eventSchemaMap = {
 
 export const LangChainStreamEventSchema = z
 	.object({
-		event: z.union([
-			// z.literal("on_chat_model_start"),
-			// z.literal("on_chat_model_end"),
-			z.literal("on_chat_model_stream"),
-			// z.literal("on_llm_start"),
-			// z.literal("on_llm_new_token"),
-			// z.literal("on_llm_end"),
-			// z.literal("on_llm_error"),
-			// z.literal("on_chain_start"),
-			// z.literal("on_chain_end"),
-			// z.literal("on_chain_error"),
-			z.literal("on_tool_start"),
-			z.literal("on_tool_end"),
-			z.literal("on_tool_error"),
-			// z.literal("on_text"),
-			// z.literal("on_agent_action"),
-			// z.literal("on_agent_finish"),
-		]),
+		// event: z.union([
+		// 	// z.literal("on_chat_model_start"),
+		// 	// z.literal("on_chat_model_end"),
+		// 	z.literal("on_chat_model_stream"),
+		// 	// z.literal("on_llm_start"),
+		// 	// z.literal("on_llm_new_token"),
+		// 	// z.literal("on_llm_end"),
+		// 	// z.literal("on_llm_error"),
+		// 	// z.literal("on_chain_start"),
+		// 	// z.literal("on_chain_end"),
+		// 	// z.literal("on_chain_error"),
+		// 	z.literal("on_tool_start"),
+		// 	z.literal("on_tool_end"),
+		// 	z.literal("on_tool_error"),
+		// 	// z.literal("on_text"),
+		// 	// z.literal("on_agent_action"),
+		// 	// z.literal("on_agent_finish"),
+		// ]),
+		event: z.string(),
 		data: z.any(),
 	})
 	.superRefine((value, ctx) => {
