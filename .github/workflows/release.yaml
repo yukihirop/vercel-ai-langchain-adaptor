@@ -9,7 +9,7 @@ on:
     types: [published]
 
 jobs:
-  setup:
+  release:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
