@@ -41,6 +41,28 @@ This package focuses on select events from LangChain's ecosystem, with additiona
 - Tool usage monitoring and error handling with events like `on_tool_start`, `on_tool_end`, and `on_tool_error`.
 - Extending LangChain's capabilities in serverless environments without significant overhead.
 
+#### toDataStreamResponse
+
+```ts
+import { ChatOpenAI } from '@langchain/openai';
+import { LangChainAdapter } from 'vercel-ai-langchain-adaptor';
+
+export async function POST(req: Request) {
+  const { prompt } = await req.json();
+
+  const model = new ChatOpenAI({
+    model: 'gpt-3.5-turbo-0125',
+    temperature: 0,
+  });
+
+  const stream = await model.stream(prompt);
+
+  return LangChainAdapter.toDataStreamResponse(stream);
+}
+```
+
+https://sdk.vercel.ai/docs/reference/stream-helpers/langchain-adapter
+
 ---
 
 ### Installation
