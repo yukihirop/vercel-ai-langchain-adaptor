@@ -125,6 +125,10 @@ function toDataStreamInternal(
 					}
 					const parsed = LangChainIntermediateStreamEventSchema.safeParse(obj);
 
+					/**
+					 * @see https://sdk.vercel.ai/docs/ai-sdk-ui/stream-protocol
+					 */
+
 					if (parsed.data?.type === "text") {
 						controller.enqueue(formatDataStreamPart("text", parsed.data?.data));
 					} else if (parsed.data?.type === "data") {
@@ -142,7 +146,6 @@ function use_data(event: string): boolean {
 		// "on_chat_model_start",
 		// "on_chat_model_end",
 		// "on_llm_start",
-		// "on_chat_model_start",
 		// "on_llm_new_token",
 		// "on_llm_end",
 		// "on_llm_error",
@@ -153,7 +156,7 @@ function use_data(event: string): boolean {
 		"on_tool_end",
 		"on_tool_error",
 		// "on_text",
-		"on_agent_action",
-		"on_agent_finish",
+		// "on_agent_action",
+		// "on_agent_finish",
 	].includes(event);
 }
