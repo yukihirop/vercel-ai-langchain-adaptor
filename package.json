@@ -1,49 +1,45 @@
 {
-	"name": "vercel-ai-langchain-adaptor",
-	"type": "module",
-	"main": "./dist/cjs/index.js",
-	"module": "./dist/esm/index.js",
-	"types": "./dist/types/index.d.ts",
-	"exports": {
-		".": {
-			"require": "./dist/cjs/index.js",
-			"import": "./dist/esm/index.js",
-			"types": "./dist/types/index.d.ts"
-		}
-	},
-	"files": [
-		"dist",
-		"README.md",
-		"README.ja.md"
-	],
-	"scripts": {
-		"build": "bun run build:clean && bun run build:esm && bun run build:cjs && bun run build:types",
-		"build:clean": "rm -rf dist",
-		"build:esm": "bun build --minify ./src/index.ts --outdir ./dist/esm --target node",
-		"build:cjs": "bun build --minify ./src/index.ts --outdir ./dist/cjs --target node --format cjs",
-		"build:types": "tsc --emitDeclarationOnly --outDir dist/types",
-		"lint": "bunx biome lint",
-		"format": "bunx biome format",
-		"format:write": "bunx biome format --write",
-		"prepare": "husky"
-	},
-	"devDependencies": {
-		"@ai-sdk/provider": "^1.0.2",
-		"@ai-sdk/provider-utils": "^2.0.4",
-		"@ai-sdk/ui-utils": "^1.0.5",
-		"@biomejs/biome": "1.9.4",
-		"@types/bun": "latest",
-		"cspell": "^8.17.1",
-		"husky": "^9.1.7",
-		"lint-staged": "^15.2.11",
-		"vitest": "^2.1.8"
-	},
-	"peerDependencies": {
-		"typescript": "^5.0.0",
-		"@ai-sdk/ui-utils": "^1.0",
-		"@ai-sdk/provider": "^1.0"
-	},
-	"dependencies": {
-		"zod": "^3.24.1"
-	}
+  "name": "vercel-ai-langchain-adaptor",
+  "type": "module",
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
+  "types": "./dist/types/index.d.ts",
+  "exports": {
+    ".": {
+      "require": "./dist/cjs/index.js",
+      "import": "./dist/esm/index.js",
+      "types": "./dist/types/index.d.ts"
+    }
+  },
+  "files": ["dist", "README.md", "README.ja.md"],
+  "scripts": {
+    "build": "bun run build:clean && bun run build:esm && bun run build:cjs && bun run build:types",
+    "build:clean": "rm -rf dist",
+    "build:esm": "bun build --minify ./src/index.ts --outdir ./dist/esm --target node",
+    "build:cjs": "bun build --minify ./src/index.ts --outdir ./dist/cjs --target node --format cjs",
+    "build:types": "tsc --emitDeclarationOnly --outDir dist/types",
+    "lint": "bunx biome lint",
+    "format": "bunx biome format",
+    "format:write": "bunx biome format --write",
+    "prepare": "husky"
+  },
+  "devDependencies": {
+    "@ai-sdk/provider": "^1.0.2",
+    "@ai-sdk/provider-utils": "^2.0.4",
+    "@ai-sdk/ui-utils": "^1.0.5",
+    "@biomejs/biome": "1.9.4",
+    "@types/bun": "latest",
+    "cspell": "^8.17.1",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.2.11",
+    "vitest": "^2.1.8"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0",
+    "@ai-sdk/ui-utils": "^1.0",
+    "@ai-sdk/provider": "^1.0"
+  },
+  "dependencies": {
+    "zod": "^3.24.1"
+  }
 }
