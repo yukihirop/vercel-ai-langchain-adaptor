@@ -4,24 +4,24 @@ import { LangChainIntermediateStreamEventSchema } from "./langchain-schema";
  * Configuration options and helper callback methods for stream lifecycle events.
  */
 export interface StreamCallbacks {
-	/** `onStart`: Called once when the stream is initialized. */
-	onStart?: () => Promise<void> | void;
+  /** `onStart`: Called once when the stream is initialized. */
+  onStart?: () => Promise<void> | void;
 
-	/**
-	 * `onCompletion`: Called for each tokenized message.
-	 *
-	 * @deprecated Use `onFinal` instead.
-	 */
-	onCompletion?: (completion: string) => Promise<void> | void;
+  /**
+   * `onCompletion`: Called for each tokenized message.
+   *
+   * @deprecated Use `onFinal` instead.
+   */
+  onCompletion?: (completion: string) => Promise<void> | void;
 
-	/** `onFinal`: Called once when the stream is closed with the final completion message. */
-	onFinal?: (completion: string) => Promise<void> | void;
+  /** `onFinal`: Called once when the stream is closed with the final completion message. */
+  onFinal?: (completion: string) => Promise<void> | void;
 
-	/** `onToken`: Called for each tokenized message. */
-	onToken?: (token: string) => Promise<void> | void;
+  /** `onToken`: Called for each tokenized message. */
+  onToken?: (token: string) => Promise<void> | void;
 
-	/** `onText`: Called for each text chunk. */
-	onText?: (text: string) => Promise<void> | void;
+  /** `onText`: Called for each text chunk. */
+  onText?: (text: string) => Promise<void> | void;
 }
 
 /**
@@ -47,45 +47,45 @@ export interface StreamCallbacks {
  * const transformer = createCallbacksTransformer(callbacks);
  */
 export function createCallbacksTransformer(
-	callbacks: StreamCallbacks | undefined = {},
+  callbacks: StreamCallbacks | undefined = {},
 ): TransformStream<string, Uint8Array> {
-	const textEncoder = new TextEncoder();
-	let aggregatedResponse = "";
+  const textEncoder = new TextEncoder();
+  let aggregatedResponse = "";
 
-	return new TransformStream({
-		async start(): Promise<void> {
-			if (callbacks.onStart) await callbacks.onStart();
-		},
+  return new TransformStream({
+    async start(): Promise<void> {
+      if (callbacks.onStart) await callbacks.onStart();
+    },
 
-		async transform(message, controller): Promise<void> {
-			controller.enqueue(textEncoder.encode(message));
+    async transform(message, controller): Promise<void> {
+      controller.enqueue(textEncoder.encode(message));
 
-			let obj = {};
-			try {
-				obj = JSON.parse(message);
-			} catch {
-				return;
-			}
+      let obj = {};
+      try {
+        obj = JSON.parse(message);
+      } catch {
+        // noop
+      }
 
-			const parsed = LangChainIntermediateStreamEventSchema.safeParse(obj);
+      const parsed = LangChainIntermediateStreamEventSchema.safeParse(obj);
 
-			if (parsed.data?.type === "text") {
-				aggregatedResponse += parsed?.data?.data;
+      if (parsed.data?.type === "text") {
+        aggregatedResponse += parsed?.data?.data;
 
-				if (callbacks.onToken) await callbacks.onToken(parsed.data?.data);
-				if (callbacks.onText && typeof parsed.data?.data === "string") {
-					await callbacks.onText(parsed.data?.data);
-				}
-			}
-		},
+        if (callbacks.onToken) await callbacks.onToken(parsed.data?.data);
+        if (callbacks.onText && typeof parsed.data?.data === "string") {
+          await callbacks.onText(parsed.data?.data);
+        }
+      }
+    },
 
-		async flush(): Promise<void> {
-			if (callbacks.onCompletion) {
-				await callbacks.onCompletion(aggregatedResponse);
-			}
-			if (callbacks.onFinal) {
-				await callbacks.onFinal(aggregatedResponse);
-			}
-		},
-	});
+    async flush(): Promise<void> {
+      if (callbacks.onCompletion) {
+        await callbacks.onCompletion(aggregatedResponse);
+      }
+      if (callbacks.onFinal) {
+        await callbacks.onFinal(aggregatedResponse);
+      }
+    },
+  });
 }

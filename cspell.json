@@ -1,11 +1,19 @@
 {
     "version": "0.2",
-    "ignorePaths": ["dist", "node_modules", "README.md"],
+    "ignorePaths": [
+        "dist",
+        "node_modules",
+        "README.md"
+    ],
     "dictionaryDefinitions": [],
     "dictionaries": [],
     "words": [
         "bunx",
+        "hopfield",
+        "kwargs",
         "langchain",
+        "langgraph",
+        "pregel",
         "readmeja"
     ],
     "ignoreWords": [],
