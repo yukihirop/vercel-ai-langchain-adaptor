@@ -1,11 +1,37 @@
 {
   "name": "vercel-ai-langchain-adaptor",
-  "module": "index.ts",
   "type": "module",
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
+  "types": "./dist/types/index.d.ts",
+  "exports": {
+    ".": {
+      "require": "./dist/cjs/index.js",
+      "import": "./dist/esm/index.js",
+      "types": "./dist/types/index.d.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "bun run build:clean && bun run build:esm && bun run build:cjs && bun run build:types",
+    "build:clean": "rm -rf dist",
+    "build:esm": "bun build ./src/index.ts --outdir ./dist/esm --target node",
+    "build:cjs": "bun build ./src/index.ts --outdir ./dist/cjs --target node --format cjs",
+    "build:types": "tsc --emitDeclarationOnly --outDir dist/types"
+  },
   "devDependencies": {
-    "@types/bun": "latest"
+    "@types/bun": "latest",
+    "@ai-sdk/ui-utils": "^1.0.5",
+    "@ai-sdk/provider": "^1.0.2"
   },
   "peerDependencies": {
-    "typescript": "^5.0.0"
+    "typescript": "^5.0.0",
+    "@ai-sdk/ui-utils": "^1.0",
+    "@ai-sdk/provider": "^1.0"
+  },
+  "dependencies": {
+    "zod": "^3.24.1"
   }
 }
