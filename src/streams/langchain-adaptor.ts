@@ -1,8 +1,12 @@
 import { formatDataStreamPart } from "@ai-sdk/ui-utils";
 import { prepareResponseHeaders } from "../core/util/prepare-response-headers";
-import type { DataStreamWriter } from '../core/data-stream/data-stream-writer'
+import type { DataStreamWriter } from "../core/data-stream/data-stream-writer";
 
-import type { LangChainStreamEvent, LangChainAIMessageChunk, LangChainMessageContentComplex } from "./langchain-schema";
+import type {
+	LangChainStreamEvent,
+	LangChainAIMessageChunk,
+	LangChainMessageContentComplex,
+} from "./langchain-schema";
 
 import { LangChainIntermediateStreamEventSchema } from "./langchain-schema";
 
@@ -30,13 +34,19 @@ export function toDataStream(
 }
 
 export function toDataStreamResponse(
-	stream: ReadableStream<LangChainStreamEvent> | ReadableStream<LangChainAIMessageChunk> | ReadableStream<string>,
+	stream:
+		| ReadableStream<LangChainStreamEvent>
+		| ReadableStream<LangChainAIMessageChunk>
+		| ReadableStream<string>,
 	options?: {
 		init?: ResponseInit;
 		callbacks?: StreamCallbacks;
 	},
 ) {
-	const dataStream = toDataStreamInternal(stream, options?.callbacks).pipeThrough(new TextEncoderStream());
+	const dataStream = toDataStreamInternal(
+		stream,
+		options?.callbacks,
+	).pipeThrough(new TextEncoderStream());
 	const init = options?.init;
 
 	return new Response(dataStream, {
@@ -60,12 +70,17 @@ export function mergeIntoDataStream(
 }
 
 function toDataStreamInternal(
-	stream: ReadableStream<LangChainStreamEvent> | ReadableStream<LangChainAIMessageChunk> | ReadableStream<string>,
+	stream:
+		| ReadableStream<LangChainStreamEvent>
+		| ReadableStream<LangChainAIMessageChunk>
+		| ReadableStream<string>,
 	callbacks?: StreamCallbacks,
 ) {
 	return stream
 		.pipeThrough(
-			new TransformStream<LangChainStreamEvent | LangChainAIMessageChunk | string>({
+			new TransformStream<
+				LangChainStreamEvent | LangChainAIMessageChunk | string
+			>({
 				transform: async (value, controller) => {
 					if (typeof value === "string") {
 						controller.enqueue(JSON.stringify({ type: "text", data: value }));
@@ -76,12 +91,16 @@ function toDataStreamInternal(
 						if (value.event === "on_chat_model_stream") {
 							const chunk = value.data?.chunk as LangChainAIMessageChunk;
 							if (typeof chunk.content === "string") {
-								controller.enqueue(JSON.stringify({ type: "text", data: chunk.content }));
+								controller.enqueue(
+									JSON.stringify({ type: "text", data: chunk.content }),
+								);
 							} else {
 								const content: LangChainMessageContentComplex[] = chunk.content;
 								for (const item of content) {
 									if (item.type === "text") {
-										controller.enqueue(JSON.stringify({ type: "text", data: item.text }));
+										controller.enqueue(
+											JSON.stringify({ type: "text", data: item.text }),
+										);
 									}
 								}
 							}
@@ -109,7 +128,9 @@ function toDataStreamInternal(
 					if (parsed.data?.type === "text") {
 						controller.enqueue(formatDataStreamPart("text", parsed.data?.data));
 					} else if (parsed.data?.type === "data") {
-						controller.enqueue(formatDataStreamPart("data", [parsed.data?.data]));
+						controller.enqueue(
+							formatDataStreamPart("data", [parsed.data?.data]),
+						);
 					}
 				},
 			}),
@@ -133,6 +154,6 @@ function use_data(event: string): boolean {
 		"on_tool_error",
 		// "on_text",
 		"on_agent_action",
-		"on_agent_finish"
-	].includes(event)
+		"on_agent_finish",
+	].includes(event);
 }
